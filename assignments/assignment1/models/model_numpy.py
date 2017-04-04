@@ -91,6 +91,7 @@ class FullyConnectedLayer(object):
     """
     Parameters:
     act_func: activation function
+    act_func_D: derivative of activation function
     input_dim: dimensionality of input
     hidden_dim: dimensionality of output (=number of neurons in the layer)
     weights_initializer: function for initializing weights
@@ -117,18 +118,19 @@ class FullyConnectedLayer(object):
     def forward_pass(self, x):
         """ Forward pass through layer."""
         # TO BE IMPLEMENTED
-        #self.x = ...
-        #self.z = ...
-        #self.a = ...
+        self.x = x
+        self.z = np.dot(x, self.w) + self.b
+        self.a = self.act.act(self.z)
         return self.a
 
     def backward_pass(self, w, delta):
         """ Backward pass through layer. 'w' and 'delta' are matrices of higher layer. """
         batch_size = float(delta.shape[0])
         # TO BE IMPLEMENTED
-        #self.delta =  ...
-        #self.db = ...
-        #self.dw = ...
+        self.delta = np.multiply(np.dot(w, delta.T).T, self.act.act_der(self.z))
+        self.db = np.sum(self.delta, axis=0, keepdims=True) / batch_size
+        self.dw = np.dot(self.x.T, self.delta) / batch_size
+        return self.delta
 
 
 
