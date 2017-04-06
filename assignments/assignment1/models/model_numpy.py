@@ -16,7 +16,7 @@ class SoftmaxNetwork(object):
         self.layers = layers
         # sense checks
         if len(layers) > 1:
-            for i in xrange(len(layers) - 1):
+            for i in range(len(layers) - 1):
                 assert layers[i].hidden_dim == layers[i+1].input_dim, 'Inconsistent dimensions, layers {} and {}.'.\
                     format(i, i+1)
         assert type(self.layers[-1].act).__name__ == 'Softmax', 'Last layer should be softmax for this class.'

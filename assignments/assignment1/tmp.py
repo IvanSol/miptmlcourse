@@ -34,6 +34,8 @@ plot_decision_boundary(x, y_tar, network_numpy.predict)
 from tqdm import tqdm
 from models.opt_derivative_free import mult_random_search, mult_cem
 
+###RANDOM SEARCH###
+
 def f(params):
     network_numpy.set_params_from_flatten_array(params)
     return network_numpy.calc_accuracy(x, y_tar)
@@ -53,3 +55,51 @@ plt.plot(max_acc)
 plt.show()
 print 'Last iteration. Average accuracy in batch: {:.2f}%; Accuracy with best weights: {:.2f}%'\
                                                                       .format(av_acc[-1]*100, max_acc[-1]*100)
+
+# decision boundary
+best_weights = res['best_params']
+network_numpy.set_params_from_flatten_array(best_weights)
+plot_decision_boundary(x, y_tar, network_numpy.predict)
+plt.show()
+
+###CEM###
+
+# training
+network_numpy = build_simple_network()
+params_mean = np.zeros(network_numpy.n_params)
+av_acc, max_acc = [], []
+n_iter = 50
+res_rs = mult_cem(f, params_mean, params_std=1., n_workers=4, batch_size=200, n_iter=n_iter)
+for i in tqdm(xrange(n_iter)):
+    res = next(res_rs)
+    av_acc.append(res['results'].mean())
+    max_acc.append(np.max(res['results']))
+plt.plot(av_acc)
+plt.plot(max_acc)
+plt.show()
+print 'Last iteration. Average accuracy in batch: {:.2f}%; Accuracy with best weights: {:.2f}%'\
+                                                                      .format(av_acc[-1]*100, max_acc[-1]*100)
+
+# decision boundary
+best_weights = res['best_params']
+network_numpy.set_params_from_flatten_array(best_weights)
+plot_decision_boundary(x, y_tar, network_numpy.predict)
+plt.show()
+
+###BATCH GRADIENT###
+
+# training
+network_numpy = build_simple_network()
+acc = [network_numpy.calc_accuracy(x, y_tar)]
+n_iter = 400
+for i in tqdm(xrange(n_iter)):
+    network_numpy.update_weights(x=x, y_tar=y_tar, eps=1.)
+    acc.append(network_numpy.calc_accuracy(x, y_tar))
+plt.plot(acc)
+plt.show()
+print 'Accuracy with last weights: {:.2f}%'.format(acc[-1]*100)
+
+# decision boundary
+plot_decision_boundary(x, y_tar, network_numpy.predict)
+plt.show()
+

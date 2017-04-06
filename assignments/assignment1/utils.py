@@ -35,7 +35,7 @@ class Tanh(object):
         return np.tanh(x)
 
     def act_der(self, x):
-        return (1 - np.power(x, 2))
+        return (1 - np.power(np.tanh(x), 2))
 
 
 class Sigmoid(object):
@@ -54,3 +54,11 @@ class Softmax(object):
 
     def act_der(self, x):
         raise NotImplementedError
+
+class ReLU(object):
+
+    def act(self, x):
+        return np.maximum(x, 0)
+
+    def act_der(self, x):
+        return 1 * (x > 0)
