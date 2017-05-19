@@ -1,11 +1,11 @@
 import os
 import numpy as np
 import pandas as pd
-from models.settings import *
-from models.utils import quadratic_weighted_kappa, get_class_weights 
+from settings import *
+from utils import quadratic_weighted_kappa, get_class_weights 
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ModelCheckpoint
-from models.model import initialize_model
+from model import initialize_model
 
 #######################################################
 #                                                     #
