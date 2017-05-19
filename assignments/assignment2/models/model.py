@@ -4,7 +4,21 @@ from keras.layers import Dropout, Flatten, Dense
 from keras.layers import Conv2D, MaxPooling2D, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD, Adam
+import keras.backend as K
+from itertools import product
+import numpy as np
 from keras.utils import plot_model
+
+def w_categorical_crossentropy(y_true, y_pred):
+    weights = np.array([[abs(i - j) for i in range(5)] for j in range(5)])
+    nb_cl = len(weights)
+    final_mask = K.zeros_like(y_pred[:, 0])
+    y_pred_max = K.max(y_pred, axis=1)
+    y_pred_max = K.reshape(y_pred_max, (K.shape(y_pred)[0], 1))
+    y_pred_max_mat = K.equal(y_pred, y_pred_max)
+    for c_p, c_t in product(range(nb_cl), range(nb_cl)):
+        final_mask += (weights[c_t, c_p] * y_pred_max_mat[:, c_p] * y_true[:, c_t])
+    return K.categorical_crossentropy(y_pred, y_true) * final_mask
 
 def initialize_model():
 
@@ -53,7 +67,7 @@ def initialize_model():
     model.add(Activation('softmax'))
 
     opt = Adam(lr=LEARNING_RATE, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    model.compile(loss = "categorical_crossentropy", optimizer = opt, metrics=['accuracy'])
+    model.compile(loss = w_categorical_crossentropy, optimizer = opt, metrics=['accuracy'])
 
     print (model.summary())
 
