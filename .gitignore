@@ -17,3 +17,5 @@ Untitled*.ipynb
 *.data
 *.h5
 *MNIST_data
+./assignments/assignment2/data/*
+data*.z*
