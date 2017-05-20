@@ -2,9 +2,9 @@ import os
 import numpy as np
 import pandas as pd
 from PIL import Image
-from models.settings import *
+from settings import *
 from keras.models import model_from_json
-from models.utils import quadratic_weighted_kappa
+from utils import quadratic_weighted_kappa
 
 # test data dir
 test_data_dir = 'data/validation/'
