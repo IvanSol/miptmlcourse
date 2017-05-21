@@ -67,7 +67,7 @@ def initialize_model():
     model.add(Activation('softmax'))
 
     opt = Adam(lr=LEARNING_RATE, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    model.compile(loss = w_categorical_crossentropy, optimizer = opt, metrics=['accuracy'])
+    model.compile(loss = "categorical_crossentropy", optimizer = opt, metrics=['accuracy'])
 
     print (model.summary())
 
