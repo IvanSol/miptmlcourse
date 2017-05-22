@@ -15,11 +15,11 @@ WEIGHTS_DIR = 'model_params/'
 NB_CLASSES = 5
 
 # number of epochs
-NB_EPOCHS = 100
+NB_EPOCHS = 30
 
 # batch size
 BATCH_SIZE = 50
 
 # learning rate
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 1e-5
 
