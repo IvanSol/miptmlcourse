@@ -1,7 +1,7 @@
 import skimage.transform as transf
 import skimage
 import skimage.io as io
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import os
 import numpy as np
 
@@ -21,13 +21,20 @@ d_set = 'train'
 if not os.path.exists(outp_dir):
     os.makedirs(outp_dir)
 
+k=0
+
 for d_set in sets:
+    print 'Data set:', d_set
     if not os.path.exists(os.path.join(outp_dir, d_set)):
         os.makedirs(os.path.join(outp_dir, d_set))
     for l in labels[d_set]:
+	print '  Label:', l
         if not os.path.exists(os.path.join(outp_dir, d_set, l)):
             os.makedirs(os.path.join(outp_dir, d_set, l))
-        for f in os.listdir(os.path.join(inp_dir, d_set, l)):
+        files = os.listdir(os.path.join(inp_dir, d_set, l))
+        for f in files:
+	    print '    File:', f, '(' + str(k), '/', str(len(files)) + ')'
+            k += 1
             img0 = io.imread(os.path.join(inp_dir, d_set, l, f))
             for j in xrange(3):
                 img = transf.rotate(img0, np.random.randint(-30, 30))
