@@ -1,6 +1,6 @@
 
 # dimensions of images.
-IMG_WIDTH, IMG_HEIGHT = 512, 512
+IMG_WIDTH, IMG_HEIGHT = 352, 352
 
 # train data directory
 TRAIN_DATA_DIR = 'data/train/'
@@ -21,5 +21,5 @@ NB_EPOCHS = 30
 BATCH_SIZE = 50
 
 # learning rate
-LEARNING_RATE = 1e-5
+LEARNING_RATE = 5e-5
 
