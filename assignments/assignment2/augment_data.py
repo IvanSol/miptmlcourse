@@ -6,8 +6,8 @@ from settings import *
 import os
 import numpy as np
 
-inp_dir = 'data'
-outp_dir = 'data_augmented2'
+inp_dir = 'data_src'
+outp_dir = 'data_augmented3'
 
 labels =  {'train': ['class0', 'class1', 'class2', 'class3', 'class4'],
  'validation': ['class0', 'class1', 'class2', 'class3', 'class4'],
@@ -21,7 +21,7 @@ delta = 80
 
 import multiprocessing
 CPUs = multiprocessing.cpu_count()
-pool = multiprocessing.Pool(processes=CPUs)
+pool = multiprocessing.Pool(processes=CPUs - 1)
 
 def augment(element):
     d_set, l, f = element
@@ -67,5 +67,6 @@ for d_set in sets:
             img_pool += [[d_set, l, f]]
 
 print('Running through', CPUs, 'processes...')
+print('Total:', len(img_pool), 'images')
 pool.map(augment, img_pool)
 print('Done')
