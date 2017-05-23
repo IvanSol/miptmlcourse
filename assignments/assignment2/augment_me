@@ -1,8 +1,14 @@
 #!/bin/bash
+CPU=2
+
+mkdir tmp
+rm tmp/*
+python augment_data.py $CPU
+
 i=0
-while [ $i -lt 32 ]
+while [ $i -lt $CPU ]
 do
 	echo $i
-	i=$(($i+1))
 	python augment_list.py ./tmp/$i &
+	i=$(($i+1))
 done

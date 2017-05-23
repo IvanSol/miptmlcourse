@@ -4,6 +4,7 @@ import skimage.io as io
 from settings import *
 #import matplotlib.pyplot as plt
 import os
+import sys
 import numpy as np
 
 inp_dir = 'data_src'
@@ -19,11 +20,12 @@ sets = [
 ]
 delta = 80
 
-tr_labels = open('trainLabels2.csv', 'w')
+CPU = int(sys.argv[1])
+#tr_labels = open('trainLabels2.csv', 'w')
 
 #print >> tr_labels, "image,level"
 
-d_set = 'train'
+#d_set = 'train'
 if not os.path.exists(outp_dir):
     os.makedirs(outp_dir)
 
@@ -46,34 +48,13 @@ for d_set in sets:
 print('Total:', len(img_pool), 'images')
 
 fs = []
-for i in range(32):
+for i in range(CPU):
     fs += [open('tmp/' + str(i), 'w')]
 
 k = 0
 for e in img_pool:
     print >> fs[k], e[0], e[1], e[2]
-    k = (k + 1) % 32
+    #print(e[0], e[1], e[2], file=fs[k])
+    k = (k + 1) % CPU
 
 print('Done')
-
-
-
-
-
-def augment(element):
-    d_set, l, f = element
-    img0 = io.imread(os.path.join(inp_dir, d_set, l, f))
-    print(os.path.join(inp_dir, d_set, l, f))
-    if (d_set == 'train'):
-        for j in range(3):
-            img = transf.rotate(img0, np.random.randint(-30, 30))
-            var = np.random.randint(0, 2)
-            if (var > 0):
-                img = skimage.util.random_noise(img, var=0.001 * var)
-            img = img[delta:-delta, delta:-delta]
-            img = transf.resize(img, (IMG_WIDTH, IMG_HEIGHT))
-            filename = f[:-5] + '_' + str(j)
-            io.imsave(os.path.join(outp_dir, d_set, l, filename + '.jpeg'), skimage.img_as_float(img))
-    else:
-        io.imsave(os.path.join(outp_dir, d_set, l, f),
-                  transf.resize(img0[delta:-delta][delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))

@@ -27,7 +27,7 @@ def augment(element):
             io.imsave(os.path.join(outp_dir, d_set, l, filename + '.jpeg'), skimage.img_as_float(img))
     else:
         io.imsave(os.path.join(outp_dir, d_set, l, f),
-                  transf.resize(img0[delta:-delta][delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))
+                  transf.resize(img0[delta:-delta, delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))
 
 
 import sys
