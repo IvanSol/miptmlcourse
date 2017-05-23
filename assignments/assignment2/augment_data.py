@@ -19,29 +19,6 @@ sets = [
 ]
 delta = 80
 
-import multiprocessing
-CPUs = multiprocessing.cpu_count()
-pool = multiprocessing.Pool(processes=CPUs - 1)
-
-def augment(element):
-    d_set, l, f = element
-    img0 = io.imread(os.path.join(inp_dir, d_set, l, f))
-    print(os.path.join(inp_dir, d_set, l, f))
-    if (d_set == 'train'):
-        for j in range(3):
-            img = transf.rotate(img0, np.random.randint(-30, 30))
-            var = np.random.randint(0, 2)
-            if (var > 0):
-                img = skimage.util.random_noise(img, var=0.001 * var)
-            img = img[delta:-delta, delta:-delta]
-            img = transf.resize(img, (IMG_WIDTH, IMG_HEIGHT))
-            filename = f[:-5] + '_' + str(j)
-            io.imsave(os.path.join(outp_dir, d_set, l, filename + '.jpeg'), skimage.img_as_float(img))
-    else:
-        io.imsave(os.path.join(outp_dir, d_set, l, f),
-                  transf.resize(img0[delta:-delta][delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))
-
-
 tr_labels = open('trainLabels2.csv', 'w')
 
 #print >> tr_labels, "image,level"
@@ -66,7 +43,37 @@ for d_set in sets:
             k += 1
             img_pool += [[d_set, l, f]]
 
-print('Running through', CPUs, 'processes...')
 print('Total:', len(img_pool), 'images')
-pool.map(augment, img_pool)
+
+fs = []
+for i in range(32):
+    fs += [open('tmp/' + str(i), 'w')]
+
+k = 0
+for e in img_pool:
+    print >> fs[k], e[0], e[1], e[2]
+    k = (k + 1) % 32
+
 print('Done')
+
+
+
+
+
+def augment(element):
+    d_set, l, f = element
+    img0 = io.imread(os.path.join(inp_dir, d_set, l, f))
+    print(os.path.join(inp_dir, d_set, l, f))
+    if (d_set == 'train'):
+        for j in range(3):
+            img = transf.rotate(img0, np.random.randint(-30, 30))
+            var = np.random.randint(0, 2)
+            if (var > 0):
+                img = skimage.util.random_noise(img, var=0.001 * var)
+            img = img[delta:-delta, delta:-delta]
+            img = transf.resize(img, (IMG_WIDTH, IMG_HEIGHT))
+            filename = f[:-5] + '_' + str(j)
+            io.imsave(os.path.join(outp_dir, d_set, l, filename + '.jpeg'), skimage.img_as_float(img))
+    else:
+        io.imsave(os.path.join(outp_dir, d_set, l, f),
+                  transf.resize(img0[delta:-delta][delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))
