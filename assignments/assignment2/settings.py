@@ -1,6 +1,6 @@
 
 # dimensions of images.
-IMG_WIDTH, IMG_HEIGHT = 128, 128
+IMG_WIDTH, IMG_HEIGHT = 256, 256
 
 # train data directory
 TRAIN_DATA_DIR = 'data/train/'
