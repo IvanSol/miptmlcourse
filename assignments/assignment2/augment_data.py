@@ -54,4 +54,4 @@ for d_set in sets:
                     if (d_set == 'train'):
                         print >> tr_labels, filename+','+l[-1]
             else:
-                io.imsave(os.path.join(outp_dir, d_set, l, f), img0[delta:-delta][delta:-delta])
+                io.imsave(os.path.join(outp_dir, d_set, l, f), transf.resize(img0[delta:-delta][delta:-delta], (IMG_WIDTH, IMG_HEIGHT)))
