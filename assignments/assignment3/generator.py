@@ -27,8 +27,8 @@ def data_generator(input_dir):
 
     # get one-hot vectors of correct labels
     def one_hot_transform(array, voc=ACTIVITIES_LIST):
-        int_indexes = map(voc.index, array)
-        return map(lambda idx: map(int, [ix == idx for ix in range(NB_CLASSES)]), int_indexes)
+        int_indexes = list(map(voc.index, array))
+        return list(map(lambda idx: list(map(int, [ix == idx for ix in range(NB_CLASSES)])), int_indexes))
 
     encoded_correct_labels = np.array(one_hot_transform(correct_labels))
 
@@ -45,7 +45,7 @@ def data_generator(input_dir):
         input_files_batch, input_files = input_files[:BATCH_SIZE], input_files[BATCH_SIZE:]
         correct_labels_batch, encoded_correct_labels = encoded_correct_labels[:BATCH_SIZE], encoded_correct_labels[BATCH_SIZE:]
 
-        input_data_batch = map(get_data_from_file, input_files_batch)
+        input_data_batch = list(map(get_data_from_file, input_files_batch))
         input_data_batch = np.array(input_data_batch)
 
         yield input_data_batch, correct_labels_batch
@@ -54,10 +54,16 @@ def generator_superviser(input_dir):
     generator = data_generator(input_dir)
     while True:
         try:
-            X, y = generator.next()
+            if PYTHON2:
+                X, y = generator.next()
+            else:
+                X, y = next(generator)
         except:
             # re-initialize the generator if it runs out of data
             generator = data_generator(input_dir)
-            X, y = generator.next()
+            if PYTHON2:
+                X, y = generator.next()
+            else:
+                X, y = next(generator)
         yield X, y
 

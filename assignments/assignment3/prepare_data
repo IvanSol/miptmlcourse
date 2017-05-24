@@ -1,0 +1,3 @@
+#!/bin/bash
+python reshape_train_validation.py
+python augment.py

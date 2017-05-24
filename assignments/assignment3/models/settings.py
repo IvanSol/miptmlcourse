@@ -1,11 +1,13 @@
 # train data directory
 TRAIN_DATA_DIR = 'data/train/'
+#TRAIN_DATA_DIR = 'D:\\МФТИ\\X Семестр\\ML\\assignments\\assignment3\\data\\train\\'
 
 # validation data directory
 VALIDATION_DATA_DIR = 'data/validation/'
-
+#VALIDATION_DATA_DIR = 'D:\\МФТИ\\X Семестр\\ML\\assignments\\assignment3\\data\\validation\\'
 # test data directory
 TEST_DATA_DIR = 'data/test/'
+#TEST_DATA_DIR = 'D:\\МФТИ\\X Семестр\\ML\\assignments\\assignment3\\data\\test\\'
 
 # weights directory
 WEIGHTS_DIR = 'model_params/'
@@ -32,3 +34,4 @@ NB_TIMESTEPS = 5
 ACTIVITIES_LIST = ['a0'+'{0:1s}'.format(str(i+1)) if i+1 <= 9
                            else 'a'+'{0:2s}'.format(str(i+1)) for i in range(NB_CLASSES)]
 
+PYTHON2 = False
