@@ -1,0 +1,7 @@
+#!/bin/bash
+./prepare_data
+python train.py
+best=model_params/$(ls model_params -1 | tail -n 1)
+python predict $best
+
+
