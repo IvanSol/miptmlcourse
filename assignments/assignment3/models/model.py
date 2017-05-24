@@ -7,15 +7,13 @@ from models.settings import *
 def initialize_model():
 
     model = Sequential()
-    model.add(BatchNormalization(input_shape=(NB_TIMESTEPS, NB_FEATURES)))
-    model.add(LSTM(50, return_sequences=True))
+    model.add(BatchNormalization(input_shape=(NB_TIMESTEPS, NB_FEATURES),))
+    model.add(LSTM(40,  return_sequences = True))
     model.add(BatchNormalization())
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.8))
     model.add(LSTM(20))
     model.add(BatchNormalization())
     model.add(Dropout(0.5))
-    model.add(Dense(10))
-    model.add(BatchNormalization())
     model.add(Dense(NB_CLASSES))
     model.add(Activation('softmax'))
 
